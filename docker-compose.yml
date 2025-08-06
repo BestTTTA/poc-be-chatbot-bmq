@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  pgvector-db:
+    image: pgvector/pgvector:pg17
+    container_name: pgvector-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: poc-chatbot-vectordb
+    ports:
+      - "5454:5432"
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+
+volumes:
+  pgvector-data:
