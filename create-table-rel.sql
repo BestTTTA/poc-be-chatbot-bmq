@@ -71,39 +71,7 @@ CREATE TRIGGER update_queue_bookings_updated_at
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
--- Sample data insertion (optional)
--- Insert sample provinces
-INSERT INTO provinces (name) VALUES 
-    ('กรุงเทพมหานคร'),
-    ('เชียงใหม่'),
-    ('ขอนแก่น'),
-    ('สงขลา')
-ON CONFLICT (name) DO NOTHING;
 
--- Insert sample districts
-INSERT INTO districts (name, province_id) VALUES 
-    ('เขตบางรัก', 1),
-    ('เขตสาทร', 1),
-    ('เขตเมือง', 2),
-    ('เขตสันทราย', 2),
-    ('เขตเมือง', 3),
-    ('เขตเมือง', 4)
-ON CONFLICT DO NOTHING;
-
--- Insert sample services
-INSERT INTO services (name, district_id) VALUES 
-    ('บริการทะเบียน', 1),
-    ('บริการประชาสัมพันธ์', 1),
-    ('บริการภาษี', 1),
-    ('บริการทะเบียน', 2),
-    ('บริการภาษี', 2),
-    ('บริการทะเบียน', 3),
-    ('บริการประชาสัมพันธ์', 3),
-    ('บริการทะเบียน', 4),
-    ('บริการทะเบียน', 5),
-    ('บริการภาษี', 5),
-    ('บริการทะเบียน', 6)
-ON CONFLICT DO NOTHING;
 
 -- Views for easier querying
 CREATE OR REPLACE VIEW service_details AS
@@ -242,7 +210,7 @@ BEGIN
         p.name as province_name
     FROM queue_bookings qb
     JOIN services s ON qb.service_id = s.id
-    JOIN districts d ON s.district_id = d.id
+    JOIN districts d ON s.district_id = d.id    
     JOIN provinces p ON d.province_id = p.id
     WHERE (start_date_param IS NULL OR qb.booking_date >= start_date_param)
     AND (end_date_param IS NULL OR qb.booking_date <= end_date_param)
